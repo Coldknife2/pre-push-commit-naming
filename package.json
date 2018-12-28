@@ -1,0 +1,26 @@
+{
+  "name": "pre-push-commit-naming-enforcement",
+  "version": "0.0.4",
+  "description": "Automatically install pre-push hook for commit naming convention enforcement",
+  "main": "index.js",
+  "scripts": {
+    "install": "node install",
+    "uninstall": "node uninstall"
+  },
+  "keywords": [
+    "git",
+    "hooks",
+    "npm"
+  ],
+  "homepage": "https://github.com/Coldknife2/pre-push-commit-naming",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Coldknife2/pre-push-commit-naming.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "colors": "1.3.3"
+  }
+}

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+remote="$1"
+url="$2"
+
+# https://stackoverflow.com/questions/59895/getting-the-source-directory-of-a-bash-script-from-within
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+z40=0000000000000000000000000000000000000000
+
+while read localRef localSha remoteRef remoteSha
+do
+	if [ "$localSha" = $z40 ]
+	then
+		# Handle delete
+		:
+	else
+		if [ "$remoteSha" = $z40 ]
+		then
+			# New branch, examine all commits
+			range="$localSha"
+		else
+			# Update to existing branch, examine new commits
+			range="$remoteSha..$localSha"
+		fi
+
+		commits=`git rev-list "$range"`
+		
+		while read -r commitId; do
+			commitMsg=`git log --format=%B -n 1 $commitId`
+			$$HOOK_DESTINATION$$ $localRef "$commitId" $DIR "$commitMsg"
+			RESULT=$?
+			[ $RESULT -ne 0 ] && exit 1
+		done <<< "$commits"
+	fi
+done
+exit 0
